@@ -1,0 +1,32 @@
+<div class="p2-table-wrapper">
+    <div class="p2-totals" ng-show="totalTime != 0" ng-click="showTotals = !showTotals">
+        <h2 class="total-time">Weekly Total ({{totalTime}})</h2>
+        <ul ng-show="showTotals">
+            <div ng-repeat="project in projects">
+                <li ng-show="projectTime[project]" >
+                    <strong>{{decimalToTime(projectTime[project])}}</strong> &ndash; {{project}}
+                </li>
+            </div>
+        </ul>
+    </div>
+
+    <div ng-repeat="day in reverseWeekdays">
+        <div ng-show="timeEntries[day.code].length > 0">
+            <h2>{{day.name}} ({{sumTime(timeEntries[day.code])}})</h2>
+            <table cellpadding="0" cellspacing="0">
+                <tr class="entryid-{{entry.id}}" ng-class="{timing: entry.timing}" ng-repeat="entry in timeEntries[day.code] | orderBy : 'projectName'">
+                    <td class="p2-time">
+                        <timer start-time="entry.timerStart" autostart="false" interval="1000">{{hours}}:{{mminutes}}:{{sseconds}}</timer>
+                    </td>
+                    <td class="p2-project"><span class="p2-project-color p2-project-color-{{projectNameToColor(entry.projectName)}}">{{entry.projectName}}</span><br /><span class="p2-task-name">({{entry.taskName}})</span></td>
+                    <td class="p2-notes">{{entry.notes}}</td>
+                    <td class="p2-edit">
+                        <a href="#" class="p2-timer-link" title="Toggle Timer" ng-click="toggleTimer(entry)">Start Timer</a>
+                        <a href="#" class="p2-edit-link" title="Edit" ng-click="editTime(entry, day.code)">Edit</a>
+                        <a href="#" class="p2-delete-link" title="Delete" ng-click="deleteTime(entry, day.code, false)">Delete</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
